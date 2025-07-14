@@ -10,10 +10,17 @@
 #define TARGETFPS    61
 
 #define TILESIZE     40
-#define BS_BASIC_BUFFER_SIZE 8192
+#define HALFTILESIZE (TILESIZE / 2)
+#define BASIC_BUFFER_SIZE 8192
+
+#define DEFAULT_FOV  60
+#define LINE_THICKNESS 10
+#define RAYS_COUNT  1000
 
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
+
+static bool DEBUG_FLAG = false;
 
 typedef uint16_t  bs_uint;
 typedef int16_t   bs_int;
@@ -32,7 +39,7 @@ typedef struct {
     bs_Color color;
 } bs_Sphere;
 
-// TODO: Do i need it at all??
+// BS_TODO: Do i need it at all??
 typedef struct {
     bs_Vec3 position;
     bs_Color color;
@@ -41,7 +48,7 @@ typedef struct {
 
 typedef struct {
     Vector2 playerPos;
-    bs_int  playerRot;
+    float playerRot;
     Vector2 playerForward;
 } Player;
 

@@ -3,8 +3,8 @@
 
 typedef struct {
     const char* title;
-    bs_uint     screenWidth;
-    bs_uint     screenHeight;
+    bs_int      screenWidth;
+    bs_int      screenHeight;
 } WindowSettings;
 
 WindowSettings WindowSettingsDefault = { .title = "DoomCaster DEV",

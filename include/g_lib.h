@@ -92,11 +92,11 @@ void _log(char* prefix, char* message, TextColor textColor, Args... args) {
         "\x1b[37m"  // COLOR WHITE
     };
 
-    char formatBuffer[BS_BASIC_BUFFER_SIZE] = {};
+    char formatBuffer[BASIC_BUFFER_SIZE] = {};
     // TODO: Look into snprintf, lsp is complaining that sprintf is deprecated
     sprintf(formatBuffer, "%s %s %s \033[0m", TextColorTable[textColor], prefix, message);
 
-    char textBuffer[BS_BASIC_BUFFER_SIZE] = {};
+    char textBuffer[BASIC_BUFFER_SIZE] = {};
     sprintf(textBuffer, formatBuffer, args...);
 
     puts(textBuffer);
