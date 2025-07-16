@@ -1343,8 +1343,8 @@ int dataSize); // Compute SHA1 hash code, returns static int[5]
 
 // Automation events functionality
 RLAPI AutomationEventList LoadAutomationEventList(
-const char* fileName); // Load automation events list from file, NULL for empty
-                       // list, capacity = MAX_AUTOMATION_EVENTS
+const char* fileName); // Load automation events list from file, NULL for
+                       // empty list, capacity = MAX_AUTOMATION_EVENTS
 RLAPI void UnloadAutomationEventList(
 AutomationEventList list); // Unload automation events list from file
 RLAPI bool ExportAutomationEventList(AutomationEventList list,
@@ -2559,7 +2559,8 @@ RLAPI bool         CheckCollisionBoxSphere(BoundingBox box,
 RLAPI RayCollision GetRayCollisionSphere(Ray ray,
 Vector3                                      center,
 float radius); // Get collision info between ray and sphere
-RLAPI RayCollision GetRayCollisionBox(Ray ray, BoundingBox box); // Get collision info between ray and box
+RLAPI RayCollision GetRayCollisionBox(Ray ray,
+BoundingBox box); // Get collision info between ray and box
 RLAPI RayCollision GetRayCollisionMesh(Ray ray,
 Mesh                                       mesh,
 Matrix transform); // Get collision info between ray and mesh
@@ -2688,8 +2689,8 @@ RLAPI void SetAudioStreamCallback(AudioStream stream,
 AudioCallback callback); // Audio thread callback to request new data
 
 RLAPI void AttachAudioStreamProcessor(AudioStream stream,
-AudioCallback processor); // Attach audio stream processor to stream, receives
-                          // frames x 2 samples as 'float' (stereo)
+AudioCallback processor); // Attach audio stream processor to stream,
+                          // receives frames x 2 samples as 'float' (stereo)
 RLAPI void DetachAudioStreamProcessor(AudioStream stream,
 AudioCallback processor); // Detach audio stream processor from stream
 

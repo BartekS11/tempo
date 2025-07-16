@@ -13,12 +13,18 @@
 #define HALFTILESIZE (TILESIZE / 2)
 #define BASIC_BUFFER_SIZE 8192
 
-#define DEFAULT_FOV  60
+#define DEFAULT_FOV  70
 #define LINE_THICKNESS 10
 #define RAYS_COUNT  1000
 
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
+
+#define SQR_VEC(v1, v2) ({ \
+    __typeof__(v1) _v1 = (v1); \
+    __typeof__(v2) _v2 = (v2); \
+    ((_v1.x - _v2.x) * (_v1.x - _v2.x)) + ((_v1.y - _v2.y) * (_v1.y - _v2.y)); \
+})
 
 static bool DEBUG_FLAG = false;
 
@@ -27,29 +33,13 @@ typedef int16_t   bs_int;
 typedef double    bs_double;
 typedef float     bs_float;
 
-typedef Vector3 bs_Vec3;
-
-typedef Ray bs_Ray;
-
+typedef Vector2 bs_Vector2;
 typedef Color bs_Color;
 
 typedef struct {
-    bs_Vec3 center;
-    bs_float radius;
-    bs_Color color;
-} bs_Sphere;
-
-// BS_TODO: Do i need it at all??
-typedef struct {
-    bs_Vec3 position;
-    bs_Color color;
-} bs_Light;
-
-
-typedef struct {
-    Vector2 playerPos;
+    bs_Vector2 playerPos;
     float playerRot;
-    Vector2 playerForward;
+    bs_Vector2 playerForward;
 } Player;
 
 static const float VELOCITYSTEP = 0.002f;

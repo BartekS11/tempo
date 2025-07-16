@@ -11,7 +11,8 @@ WindowSettings WindowSettingsDefault = { .title = "DoomCaster DEV",
     .screenWidth                                = SCREENWIDTH,
     .screenHeight                               = SCREENHEIGHT };
 
-static void Init(void) {
+static void Init(void)
+{
     InitWindow(WindowSettingsDefault.screenWidth,
     WindowSettingsDefault.screenHeight, WindowSettingsDefault.title);
 
@@ -22,7 +23,8 @@ void UpdatePlayerPosition2d() {
 
 };
 
-void Update(void) {
+void Update(void)
+{
     if(IsWindowResized()) {
         WindowSettingsDefault.screenHeight = GetScreenHeight();
         WindowSettingsDefault.screenWidth  = GetScreenWidth();
@@ -31,6 +33,7 @@ void Update(void) {
     UpdatePlayerPosition2d();
 }
 
-static void Shutdown(void) {
+static void Shutdown(void)
+{
     CloseWindow();
 }

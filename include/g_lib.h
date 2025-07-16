@@ -42,45 +42,9 @@ enum TextColor {
     COlOR_COUNT
 };
 
-// typedef struct BumpAllocator {
-//     size_t capacity;
-//     size_t used;
-//     char*  memory;
-// } BumpAllocator;
-
-
-// BumpAllocator make_bump_allocator(size_t size) {
-//     BumpAllocator ba = {};
-
-//     ba.memory = (char*)malloc(size);
-
-//     if(!ba.memory) {
-//         BS_ASSERT(false, "Failed to allocate memory for BumpAllocator of size %zu", size);
-
-//     } else {
-//         ba.capacity = size;
-//     }
-
-//     return ba;
-// }
-
-// char* bump_alloc(BumpAllocator* bumpallocator, size_t size) {
-//     char* result = nullptr;
-
-//     size_t allignedSize = (size + 7) & ~7; // Align to 8 bytes
-//     if(bumpallocator->used + allignedSize <= bumpallocator->capacity) {
-//         result = bumpallocator->memory + bumpallocator->used;
-//         bumpallocator->used += allignedSize;
-
-//     } else {
-//         BS_ASSERT(false, "BumpAllocator out of memory");
-//     }
-//     return result;
-// }
-
-
 template <typename... Args>
-void _log(char* prefix, char* message, TextColor textColor, Args... args) {
+void _log(char* prefix, char* message, TextColor textColor, Args... args)
+{
     static const char* TextColorTable[COlOR_COUNT] = {
         "\x1b[30m", // COLOR_BLACK
         "\x1b[31m", // COLOR RED
