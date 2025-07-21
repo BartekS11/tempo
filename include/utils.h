@@ -17,6 +17,8 @@
 #define LINE_THICKNESS 10
 #define RAYS_COUNT  1000
 
+#define VELOCITYSTEP 0.002f
+
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 
@@ -29,17 +31,17 @@
 static bool DEBUG_FLAG = false;
 
 typedef uint16_t  bs_uint;
+typedef uint32_t  bs_uint32;
 typedef int16_t   bs_int;
 typedef double    bs_double;
 typedef float     bs_float;
+typedef unsigned char bs_uchar;
 
 typedef Vector2 bs_Vector2;
 typedef Color bs_Color;
 
 typedef struct {
     bs_Vector2 playerPos;
-    float playerRot;
+    bs_float playerRot;
     bs_Vector2 playerForward;
 } Player;
-
-static const float VELOCITYSTEP = 0.002f;

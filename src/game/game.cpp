@@ -13,9 +13,10 @@ void Run(void)
         if(IsKeyPressed(KEY_F5)) {
             DEBUG_FLAG = !DEBUG_FLAG;
         }
+        Update();
         UpdatePlayer(&player, prev_dt);
         BeginDrawing();
-        Draw(&player, prev_dt);
+        Draw(&player, prev_dt, GetWindowSettings());
 
         EndDrawing();
     }
