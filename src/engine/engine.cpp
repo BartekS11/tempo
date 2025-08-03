@@ -1,12 +1,7 @@
+#include "../../include/engine/engine.h"
 #include "../../include/g_lib.h"
 #include "../../include/raylib.h"
 #include "../../include/utils.h"
-
-typedef struct {
-    const char* title;
-    bs_int      screenWidth;
-    bs_int      screenHeight;
-} WindowSettings;
 
 static WindowSettings windowSettingsDefault = { .title = "DoomCaster DEV",
     .screenWidth                                       = SCREENWIDTH,
@@ -27,12 +22,6 @@ void UpdatePlayerPosition2d() {
 
 void Update(void)
 {
-    // if(IsWindowResized()) {
-    //     WindowSettingsDefault.screenHeight = GetScreenHeight();
-    //     WindowSettingsDefault.screenWidth  = GetScreenWidth();
-    // }
-
-    // UpdatePlayerPosition2d();
 }
 
 static void Shutdown(void)
@@ -43,7 +32,7 @@ static void Shutdown(void)
 WindowSettings* GetWindowSettings(void)
 {
     if(IsWindowResized()) {
-        // Update the window settings if the window has been resized
+        // BS NOTE: Update the window settings if the window has been resized
         windowSettingsDefault.screenWidth  = GetScreenWidth();
         windowSettingsDefault.screenHeight = GetScreenHeight();
     }
