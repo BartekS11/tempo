@@ -65,7 +65,7 @@ WindowSettings*             pWindowSettings)
         bs_float   rayAngle = (cameraRotation + i) * (PI / 180);
         bs_Vector2 dir      = { sin(rayAngle), cos(rayAngle) };
 
-        StepRay(cameraPosition, dir, RAYS_COUNT, &c, GRAY, &hit);
+        StepRay(cameraPosition, dir, RAYS_COUNT, &c, { 130U, 130U, 130U, 255U }, &hit);
 
         // BS NOTE: Remove fisheye effect by multiplying distance by cos of angle difference
         bs_float angleDiff = rayAngle - (cameraRotation * (PI / 180));
@@ -88,7 +88,7 @@ WindowSettings*             pWindowSettings)
         bs_int   x = (i * lineThickness) + (pWindowSettings->screenWidth / 2);
         bs_int y = (pWindowSettings->screenHeight / 2) - (RAYS_COUNT / dist) / 2;
         // BS_TRACE("Drawing ray at x: %d, y: %d", pWindowSettings->screenWidth, pWindowSettings->screenHeight);
-        DrawRectangle(x, y, lineThickness, (RAYS_COUNT / dist), color);
+        // DrawRectangle(x, y, lineThickness, (RAYS_COUNT / dist), color);
     }
 }
 
@@ -142,11 +142,12 @@ void RenderFlatMap(const bs_int map[MAP_WIDTH][MAP_HEIGHT])
 {
     for(size_t row = 0; row < MAP_WIDTH; row++) {
         for(size_t column = 0; column < MAP_HEIGHT; column++) {
-            bs_Color std_color = BLUE;
+            bs_Color std_color = { 0U, 121U, 241U, 255U };
             if(map[row][column] == 1) {
-                std_color = SKYBLUE;
+                std_color = { 102, 191, 255, 255 };
             }
-            DrawRectangle(column * TILESIZE, row * TILESIZE, TILESIZE, TILESIZE, std_color);
+            // SDL_RenderRect(renderer, );
+            // DrawRectangle(column * TILESIZE, row * TILESIZE, TILESIZE, TILESIZE, std_color);
         }
     }
 }

@@ -1,18 +1,28 @@
 #include "../../include/engine/engine.h"
 #include "../../include/g_lib.h"
-#include "../../include/raylib.h"
+// #include "../../include/raylib.h"
 #include "../../include/utils.h"
+#include <SDL3/SDL.h>
+#include <SDL3/SDL_main.h>
 
-static WindowSettings windowSettingsDefault = { .title = "DoomCaster DEV",
-    .screenWidth                                       = SCREENWIDTH,
-    .screenHeight                                      = SCREENHEIGHT };
 
 static void Init(void)
 {
-    SetConfigFlags(FLAG_WINDOW_RESIZABLE | FLAG_MSAA_4X_HINT);
-    InitWindow(windowSettingsDefault.screenWidth,
-    windowSettingsDefault.screenHeight, windowSettingsDefault.title);
 
+    if(!SDL_Init(SDL_INIT_VIDEO)) {
+        BS_ERROR("Couldn't initialize SDL: %s", SDL_GetError());
+        BS_ASSERT(false, "SDL initialization failed");
+    }
+
+    if(!SDL_CreateWindowAndRenderer(
+       "Hello SDL", SCREENWIDTH, SCREENHEIGHT, SDL_WINDOW_RESIZABLE, &windowSettingsDefaultV2.window, &windowSettingsDefaultV2.renderer)) {
+        BS_ERROR("Couldn't create window and renderer: %s", SDL_GetError());
+        BS_ASSERT(false, "SDL window and renderer creation failed");
+    }
+    // SetConfigFlags(FLAG_WINDOW_RESIZABLE | FLAG_MSAA_4X_HINT);
+    // InitWindow(windowSettingsDefault.screenWidth,
+    // windowSettingsDefault.screenHeight, windowSettingsDefault.title);
+    SDL_Init(SDL_INIT_VIDEO);
     // SetTargetFPS(TARGETFPS);
 }
 
@@ -26,7 +36,13 @@ void Update(void)
 
 static void Shutdown(void)
 {
-    CloseWindow();
+
+    SDL_DestroyTexture(windowSettingsDefaultV2.texture);
+    SDL_DestroyRenderer(windowSettingsDefaultV2.renderer);
+    SDL_DestroyWindow(windowSettingsDefaultV2.window);
+
+    SDL_Quit();
+    // CloseWindow();
 }
 
 WindowSettings* GetWindowSettings(void)

@@ -1,4 +1,4 @@
-#include "../../include/raylib.h"
+// #include "../../include/raylib.h"
 #include "../engine/engine.cpp"
 #include "../renderer/renderer.cpp"
 
@@ -6,10 +6,11 @@ static Player player{ .playerPos = { 1, 1 }, .playerRot = 0, .playerForward = { 
 
 void Run(void)
 {
+    bool isRunning = true;
     bs_double prev_dt = GetTime();
 
     Init();
-    while(!WindowShouldClose()) {
+    while(isRunning) {
         if(IsKeyPressed(KEY_F5)) {
             DEBUG_FLAG = !DEBUG_FLAG;
         }

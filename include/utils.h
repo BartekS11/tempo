@@ -1,6 +1,7 @@
 #pragma once
 
-#include "raylib.h"
+#include <SDL3/SDL.h>
+// #include "raylib.h"
 #include <cstddef>
 #include <cstdint>
 #include <cstdlib>
@@ -37,8 +38,10 @@ typedef double    bs_double;
 typedef float     bs_float;
 typedef unsigned char bs_uchar;
 
-typedef Vector2 bs_Vector2;
-typedef Color bs_Color;
+typedef SDL_FPoint bs_Vector2;
+typedef SDL_Color bs_Color;
+// typedef Vector2 bs_Vector2;
+// typedef Color bs_Color;
 
 typedef struct {
     bs_Vector2 playerPos;

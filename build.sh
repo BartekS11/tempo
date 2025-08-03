@@ -2,7 +2,7 @@
 
 defines="-DENGINE"
 warnings="-Wno-writable-strings -Wno-format-security -Wno-deprecated-declarations -Wno-switch"
-includes="-Ithird_party -Ithird_party/Include"
+includes="-Ithird_party -Ithird_party/Include -I./lib/SDL/include"
 
 timestamp=$(date +%s)
 
@@ -15,7 +15,7 @@ for arg in "$@"; do
         files+=$(find ./include \( -name "*.c" -o -name "*.cpp" -o -name "*.h" -o -name "*.hpp" \))
         if [[ -z "$files" ]]; then
             echo "No matching files found in ./src."
-            exit 0
+            exit 1
         fi
         echo "Running clang-format..."
         echo "Files: $files"
@@ -37,7 +37,7 @@ if [[ "$(uname)" == "Linux" ]]; then
 
 elif [[ "$(uname)" == "Darwin" ]]; then
     echo "Running on Mac"
-    libs="-framework CoreVideo -framework IOKit -framework Cocoa -framework GLUT -framework OpenGL lib/libraylib.a "
+    libs="-framework CoreVideo -framework IOKit -framework Cocoa -framework GLUT -framework OpenGL lib/libraylib.a `pkg-config --cflags --libs sdl3`"
     outputFile="build/my_app"
     #TODO: Work on creating game as shared library to be able to hot reload
     rm -f /build/my_app_* # Remove old game_* files
