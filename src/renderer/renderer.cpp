@@ -1,6 +1,6 @@
 #include "../../include/engine/engine.h"
 #include "../../include/g_lib.h"
-#include "../../include/raylib.h"
+#include "../../include/game/game.h"
 #include "../../include/utils.h"
 #include "../map.cpp"
 #include <algorithm>
@@ -37,10 +37,10 @@ void StepRay(bs_Vector2 position, bs_Vector2 forward, bs_int stepCount, bs_int* 
     for(bs_int i = 0; i < stepCount; ++i) {
         bs_Vector2 next = { current.x + dir.x * stepSize, current.y + dir.y * stepSize };
 
-        if(DEBUG_FLAG) {
-            DrawLine(current.x * TILESIZE + HALFTILESIZE, current.y * TILESIZE + HALFTILESIZE,
-            next.x * TILESIZE + HALFTILESIZE, next.y * TILESIZE + HALFTILESIZE, GRAY);
-        }
+        // if(DEBUG_FLAG) {
+        //     DrawLine(current.x * TILESIZE + HALFTILESIZE, current.y * TILESIZE + HALFTILESIZE,
+        //     next.x * TILESIZE + HALFTILESIZE, next.y * TILESIZE + HALFTILESIZE, GRAY);
+        // }
         if(IsHit(map, next, 0.5f)) {
             *pHit  = next;
             *pIncr = 0;
@@ -56,19 +56,19 @@ void Render3DMap(bs_Vector2 cameraPosition,
 bs_float                    cameraRotation,
 bs_int                      lineThickness,
 bs_int                      fov,
-WindowSettings*             pWindowSettings)
+WindowSettingsV2*           pWindowSettings)
 {
     for(bs_int i = -fov; i < fov; i++) {
         bs_int     c   = 0;
         bs_Vector2 hit = {};
 
-        bs_float   rayAngle = (cameraRotation + i) * (PI / 180);
+        bs_float   rayAngle = (cameraRotation + i) * (BS_PI / 180);
         bs_Vector2 dir      = { sin(rayAngle), cos(rayAngle) };
 
         StepRay(cameraPosition, dir, RAYS_COUNT, &c, { 130U, 130U, 130U, 255U }, &hit);
 
         // BS NOTE: Remove fisheye effect by multiplying distance by cos of angle difference
-        bs_float angleDiff = rayAngle - (cameraRotation * (PI / 180));
+        bs_float angleDiff = rayAngle - (cameraRotation * (BS_PI / 180));
         bs_float dist = sqrtf(SQR_VEC(cameraPosition, hit)) * cosf(angleDiff);
 
         // BS NOTE: Calculate color based on distance, color fading
@@ -87,53 +87,47 @@ WindowSettings*             pWindowSettings)
         bs_Color color = { r, g, b, 255 };
         bs_int   x = (i * lineThickness) + (pWindowSettings->screenWidth / 2);
         bs_int y = (pWindowSettings->screenHeight / 2) - (RAYS_COUNT / dist) / 2;
-        // BS_TRACE("Drawing ray at x: %d, y: %d", pWindowSettings->screenWidth, pWindowSettings->screenHeight);
-        // DrawRectangle(x, y, lineThickness, (RAYS_COUNT / dist), color);
+
+        SDL_SetRenderDrawColor(
+        pWindowSettings->pRenderer, color.r, color.g, color.b, color.a);
+        SDL_FRect rect = { (float)x, (float)y, (float)lineThickness,
+            (float)(RAYS_COUNT / dist) };
+        SDL_RenderFillRect(pWindowSettings->pRenderer, &rect);
     }
 }
 
 // BS TODO: Make this function that will behavior the same on every fps count
-bs_Vector2 Update2DPlayer(bs_Vector2* pPosition, bs_float* rotation, bs_double dt)
+bs_Vector2 Update2DPlayer(bs_Vector2* pPosition, bs_double* pRotation, float dt)
 {
-    bs_Vector2 forward = { sin(*rotation * (PI / 180)), cos(*rotation * (PI / 180)) };
+    const bool* state = SDL_GetKeyboardState(NULL);
 
+    bs_Vector2 forward       = { (float)sin(*pRotation * (BS_PI / 180)),
+              (float)cos(*pRotation * (BS_PI / 180)) };
     bs_Vector2 velocity      = { 0, 0 };
-    bs_float   rotationSpeed = 0.3f;
+    float      rotationSpeed = .3f;
 
-    // BS NOTE: Input handling and movement
-    if(IsKeyDown(KEY_W)) {
-        velocity = { VELOCITYSTEP * forward.x, VELOCITYSTEP * forward.y };
-        BS_TRACE("Moving forward, %f, %f", velocity.x, velocity.y);
+    if(state[SDL_SCANCODE_W]) {
+        velocity.x += VELOCITYSTEP * forward.x;
+        velocity.y += VELOCITYSTEP * forward.y;
     }
-
-    if(IsKeyDown(KEY_S)) {
-        velocity = { -VELOCITYSTEP * forward.x, -VELOCITYSTEP * forward.y };
-        BS_TRACE("Moving backwards, %f, %f", velocity.x, velocity.y);
+    if(state[SDL_SCANCODE_S]) {
+        velocity.x -= VELOCITYSTEP * forward.x;
+        velocity.y -= VELOCITYSTEP * forward.y;
     }
-
-    if(IsKeyDown(KEY_A)) {
-        (*rotation) -= rotationSpeed;
-        BS_TRACE("Rotating left %d, ", *rotation);
+    if(state[SDL_SCANCODE_A]) {
+        *pRotation -= rotationSpeed;
     }
-
-    if(IsKeyDown(KEY_D)) {
-        (*rotation) += rotationSpeed;
-        BS_TRACE("Rotating right %d, ", *rotation);
+    if(state[SDL_SCANCODE_D]) {
+        *pRotation += rotationSpeed;
     }
-
-    if(IsKeyDown(KEY_LEFT_SHIFT)) {
+    if(state[SDL_SCANCODE_LSHIFT]) {
         velocity.x *= 2;
         velocity.y *= 2;
-        BS_TRACE("Running, %f, %f", velocity.x, velocity.y);
     }
 
     if(!IsHit(map, { pPosition->x + velocity.x, pPosition->y + velocity.y }, 0.5)) {
         pPosition->x += velocity.x;
         pPosition->y += velocity.y;
-    }
-
-    if(IsKeyDown(KEY_ESCAPE)) {
-        CloseWindow();
     }
     return forward;
 }
@@ -154,34 +148,34 @@ void RenderFlatMap(const bs_int map[MAP_WIDTH][MAP_HEIGHT])
 
 void Render2DPlayer(const bs_Vector2 position, double dt)
 {
-    DrawCircle(position.x * TILESIZE + HALFTILESIZE,
-    position.y * TILESIZE + HALFTILESIZE, 6, ORANGE);
+    // DrawCircle(position.x * TILESIZE + HALFTILESIZE,
+    // position.y * TILESIZE + HALFTILESIZE, 6, ORANGE);
 }
 
-void UpdatePlayer(Player* pPlayer, double dt)
+void UpdatePlayer(Player* pPlayer, double dt, SDL_Event* pEvent)
 {
-    double currentTime = GetTime();
+    double currentTime = SDL_GetTicks();
 
-    if(currentTime - dt > 1.0f / 150.0f) {
-        dt = currentTime;
-        pPlayer->playerForward =
-        Update2DPlayer(&pPlayer->playerPos, &pPlayer->playerRot, dt);
+    dt = currentTime;
+    pPlayer->playerForward = Update2DPlayer(&pPlayer->playerPos, &pPlayer->playerRot, dt);
 
-        pPlayer->playerForward.x += (0.00001 * dt);
-        pPlayer->playerForward.y += (0.00001 * dt);
-    }
+    pPlayer->playerForward.x += (0.00001 * dt);
+    pPlayer->playerForward.y += (0.00001 * dt);
 }
 
-void Draw(Player* player, double dt, WindowSettings* pWindowSettings)
+void Draw(Player* player, double dt, WindowSettingsV2* pWindowSettings)
 {
-    ClearBackground(BLACK);
+    // ClearBackground(BLACK);
+    SDL_SetRenderDrawColor(pWindowSettings->pRenderer, 0, 0, 0, 255);
+    SDL_RenderClear(pWindowSettings->pRenderer);
 
     Render3DMap(player->playerPos, player->playerRot, LINE_THICKNESS,
     DEFAULT_FOV, pWindowSettings);
 
     if(DEBUG_FLAG) {
         RenderFlatMap(map);
-        Render2DPlayer(player->playerPos, dt);
-        DrawFPS(pWindowSettings->screenHeight - 100, 10);
+        // Render2DPlayer(player->playerPos, dt);
+        // DrawFPS(pWindowSettings->screenHeight - 100, 10);
     }
+    SDL_RenderPresent(pWindowSettings->pRenderer);
 }

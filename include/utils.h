@@ -1,10 +1,10 @@
 #pragma once
 
 #include <SDL3/SDL.h>
-// #include "raylib.h"
 #include <cstddef>
 #include <cstdint>
 #include <cstdlib>
+#include <math.h>
 
 #define SCREENWIDTH  1280
 #define SCREENHEIGHT 720
@@ -23,6 +23,10 @@
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 
+#define BS_PI M_PI
+#define BS_PI_2 M_PI_2
+#define BS_PI_4 M_PI_4
+
 #define SQR_VEC(v1, v2) ({ \
     __typeof__(v1) _v1 = (v1); \
     __typeof__(v2) _v2 = (v2); \
@@ -34,17 +38,10 @@ static bool DEBUG_FLAG = false;
 typedef uint16_t  bs_uint;
 typedef uint32_t  bs_uint32;
 typedef int16_t   bs_int;
+typedef int32_t   bs_int32;
 typedef double    bs_double;
 typedef float     bs_float;
 typedef unsigned char bs_uchar;
 
 typedef SDL_FPoint bs_Vector2;
 typedef SDL_Color bs_Color;
-// typedef Vector2 bs_Vector2;
-// typedef Color bs_Color;
-
-typedef struct {
-    bs_Vector2 playerPos;
-    bs_float playerRot;
-    bs_Vector2 playerForward;
-} Player;

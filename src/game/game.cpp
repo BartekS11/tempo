@@ -1,25 +1,34 @@
-// #include "../../include/raylib.h"
+#include "../../include/game/game.h"
+#include "../../include/engine/engine.h"
 #include "../engine/engine.cpp"
 #include "../renderer/renderer.cpp"
 
-static Player player{ .playerPos = { 1, 1 }, .playerRot = 0, .playerForward = { 0, 0 } };
 
 void Run(void)
 {
     bool isRunning = true;
-    bs_double prev_dt = GetTime();
 
+    bs_int32 last_tick = SDL_GetTicks();
     Init();
     while(isRunning) {
-        if(IsKeyPressed(KEY_F5)) {
-            DEBUG_FLAG = !DEBUG_FLAG;
+        bs_int32 current_tick = SDL_GetTicks();
+        bs_float delta_time   = (current_tick - last_tick) / 1000.0f;
+        last_tick             = current_tick;
+        SDL_Event event;
+        while(SDL_PollEvent(&event)) {
+            if(event.type == SDL_EVENT_KEY_DOWN) {
+                if(event.key.key == SDLK_ESCAPE) {
+                    isRunning = false;
+                }
+            }
         }
-        Update();
-        UpdatePlayer(&player, prev_dt);
-        BeginDrawing();
-        Draw(&player, prev_dt, GetWindowSettings());
+        // if(IsKeyPressed(KEY_F5)) {
+        // DEBUG_FLAG = !DEBUG_FLAG;
+        // }
 
-        EndDrawing();
+        UpdatePlayer(&player, delta_time, &event);
+
+        Draw(&player, delta_time, GetWindowSettings());
     }
 
 
