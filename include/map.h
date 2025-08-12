@@ -1,7 +1,6 @@
-#include "../include/utils.h"
+#pragma once
 
-#define MAP_WIDTH 10
-#define MAP_HEIGHT 10
+#include "utils.h"
 
 const bs_int map[MAP_WIDTH][MAP_HEIGHT] = { { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
     { 1, 0, 2, 0, 0, 0, 0, 0, 0, 1 }, { 1, 0, 0, 0, 0, 0, 0, 0, 0, 1 },

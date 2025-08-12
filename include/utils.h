@@ -14,6 +14,9 @@
 #define HALFTILESIZE (TILESIZE / 2)
 #define BASIC_BUFFER_SIZE 8192
 
+#define MAP_WIDTH 10
+#define MAP_HEIGHT 10
+
 #define DEFAULT_FOV  70
 #define LINE_THICKNESS 10
 #define RAYS_COUNT  1000
