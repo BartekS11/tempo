@@ -1,7 +1,7 @@
 #!/bin/bash
 
 defines="-DENGINE"
-warnings="-Wno-writable-strings -Wno-format-security -Wno-deprecated-declarations -Wno-switch"
+warnings="-Wall -Wno-writable-strings -Wno-format-security -Wno-deprecated-declarations -Wno-switch"
 
 # Start with fixed include paths
 includes="-Ithird_party -Ithird_party/Include -I./lib/SDL/include"

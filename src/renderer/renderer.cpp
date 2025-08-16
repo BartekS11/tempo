@@ -11,7 +11,7 @@ void Render3DMap(bs_Vector2 cameraPosition,
 bs_float                    cameraRotation,
 bs_int                      lineThickness,
 bs_int                      fov,
-WindowSettings*           pWindowSettings)
+WindowSettings*             pWindowSettings)
 {
     for(bs_int i = -fov; i < fov; i++) {
         bs_int     c   = 0;
@@ -52,12 +52,12 @@ WindowSettings*           pWindowSettings)
 }
 
 // BSTODO: Add handling of rendering flat map when debug flag will be true
-void RenderFlatMap(const bs_int map[MAP_WIDTH][MAP_HEIGHT])
+void RenderFlatMap(const bs_int map[MAP_WIDTH * MAP_HEIGHT])
 {
     for(size_t row = 0; row < MAP_WIDTH; row++) {
         for(size_t column = 0; column < MAP_HEIGHT; column++) {
             bs_Color std_color = { 0U, 121U, 241U, 255U };
-            if(map[row][column] == 1) {
+            if(map[row * MAP_WIDTH + column] == 1) {
                 std_color = { 102, 191, 255, 255 };
             }
             // SDL_RenderRect(renderer, );

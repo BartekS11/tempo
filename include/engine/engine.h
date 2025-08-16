@@ -4,25 +4,26 @@
 #include <SDL3/SDL.h>
 
 typedef struct {
-    const char*   title;
-    bs_int        screenWidth;
-    bs_int        screenHeight;
     SDL_Window*   pWindow;
     SDL_Renderer* pRenderer;
     SDL_Surface*  pSurface;
     SDL_Texture*  pTexture;
+    const char*   title;
     SDL_Event     event;
+    bs_int        screenWidth;
+    bs_int        screenHeight;
 } WindowSettings;
 
-static WindowSettings windowSettingsDefaultV2 = { .title =
-                                                    "DoomCaster DEV SDL",
-    .screenWidth  = SCREENWIDTH,
-    .screenHeight = SCREENHEIGHT,
-    .pWindow      = nullptr,
-    .pRenderer    = nullptr,
-    .pSurface     = nullptr,
-    .pTexture     = nullptr,
-    .event        = { 0 } };
+// BSNOTE: Move renderers, surface, texture and event to a separate struct
+// which is not connected to the window settings.
+static WindowSettings windowSettingsDefault = { .title = "DoomCaster DEV SDL",
+    .screenWidth                                       = SCREENWIDTH,
+    .screenHeight                                      = SCREENHEIGHT,
+    .pWindow                                           = nullptr,
+    .pRenderer                                         = nullptr,
+    .pSurface                                          = nullptr,
+    .pTexture                                          = nullptr,
+    .event                                             = { 0 } };
 
 
 void Init(void);

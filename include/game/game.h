@@ -6,13 +6,17 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_init.h>
 
+// #define FPS_CAP
+
+typedef struct {
+
+} Game;
+
 typedef struct {
     bs_Vector2 playerPos;
-    bs_double  playerRot;
     bs_Vector2 playerForward;
+    bs_double  playerRot;
 } Player;
-
-static Player player{ .playerPos = { 1, 1 }, .playerRot = 0, .playerForward = { 0, 0 } };
 
 /**
  * BSNOTE: Definition of procedures
@@ -28,6 +32,6 @@ bs_int*                 pIncr,
 bs_Color                color,
 bs_Vector2*             pHit);
 
-bool IsHit(const bs_int map[MAP_WIDTH][MAP_HEIGHT], bs_Vector2 point, bs_float size);
+bool IsHit(const bs_int map[MAP_WIDTH * MAP_HEIGHT], bs_Vector2 point, bs_float size);
 
-void UpdatePlayer(Player* pPlayer, double dt, SDL_Event* pEvent);
+void UpdatePlayer(Player* pPlayer, bs_double dt, SDL_Event* pEvent);
