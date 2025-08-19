@@ -14,6 +14,14 @@ typedef struct {
     bs_int        screenHeight;
 } WindowSettings;
 
+typedef struct {
+    SDL_Window*   pWindow;
+    SDL_Renderer* pRenderer;
+    SDL_Surface*  pSurface;
+    SDL_Texture*  pTexture;
+    SDL_Event     event;
+} Engine;
+
 // BSNOTE: Move renderers, surface, texture and event to a separate struct
 // which is not connected to the window settings.
 static WindowSettings windowSettingsDefault = { .title = "DoomCaster DEV SDL",

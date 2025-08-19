@@ -8,6 +8,9 @@
 
 #define SCREENWIDTH 1280
 #define SCREENHEIGHT 720
+
+// BSNOTE: Define FPS_CAP to enable frame rate limiting - limited to TARGETFPS
+// #define FPS_CAP
 #define TARGETFPS 144
 
 #define TILESIZE 40
@@ -23,8 +26,7 @@
 #define MAX_NAME_LENGHT 64
 #define MAX_ENTITIES 150
 
-// #define VELOCITYSTEP 0.002f
-#define VELOCITYSTEP 2.f 
+#define VELOCITYSTEP 2.f
 
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
 #define MIN(a, b) ((a) < (b) ? (a) : (b))

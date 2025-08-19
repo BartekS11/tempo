@@ -7,26 +7,26 @@ static Player player{ .playerPos = { 1, 1 }, .playerRot = 0, .playerForward = { 
 void Run(void)
 {
     bool     isRunning = true;
-    bs_int32 last_tick = 0;
+    bs_int32 lastTick  = 0;
 
-    static int   frame_count = 0;
-    static float fps_timer   = 0.0f;
-    static int   fps         = 0;
+    static bs_int32 frameCount = 0;
+    static bs_float fpsTimer   = 0.0f;
+    static bs_int32 fps        = 0;
     Init();
 
     while(isRunning) {
-        bs_int32 current_tick = SDL_GetTicks();
+        bs_int32 currentTick = SDL_GetTicks();
 
-        bs_float delta_time = (current_tick - last_tick) / 1000.0f;
-        last_tick           = current_tick;
+        bs_float deltaTime = (currentTick - lastTick) / 1000.0f;
+        lastTick           = currentTick;
 
-        frame_count++;
-        fps_timer += delta_time;
-        if(fps_timer >= 1.0f) {
-            fps = frame_count;
-            BS_TRACE("FPS: %d", fps);
-            frame_count = 0;
-            fps_timer   = 0.0f;
+        frameCount++;
+        fpsTimer += deltaTime;
+        if(fpsTimer >= 1.0f) {
+            fps = frameCount;
+            BS_DEBUG("FPS: %d", fps);
+            frameCount = 0;
+            fpsTimer   = 0.0f;
         }
         SDL_Event event;
         while(SDL_PollEvent(&event)) {
@@ -36,10 +36,10 @@ void Run(void)
                 }
             }
             if(event.type == SDL_EVENT_WINDOW_RESIZED) {
-                bs_int32 new_width  = event.window.data1;
-                bs_int32 new_height = event.window.data2;
-                BS_TRACE("Window resized to %dx%d", new_height, new_height);
-                SetWindowSettings(GetWindowSettings()->title, new_width, new_height);
+                bs_int32 newWidth  = event.window.data1;
+                bs_int32 newHeight = event.window.data2;
+                BS_TRACE("Window resized to %dx%d", newHeight, newHeight);
+                SetWindowSettings(GetWindowSettings()->title, newWidth, newHeight);
             }
             if(event.type == SDL_EVENT_QUIT) {
                 isRunning = false;
@@ -49,16 +49,18 @@ void Run(void)
         // DEBUG_FLAG = !DEBUG_FLAG;
         // }
 
+// BSTODO: Fix fps cap, its not working properly, not making to the target fps
+// maybe something with SDL_Delay
 #ifdef FPS_CAP
-    const double frame_delta = 1000.0 / TARGETFPS;
-    bs_int32 frame_time = SDL_GetTicks() - current_tick;
-    if(frame_time < frame_delta) {
-        SDL_Delay((bs_int32)(frame_delta - frame_time));
-    }
+        const double frameDelta = 1000.0 / TARGETFPS;
+        bs_int32     frameTime  = SDL_GetTicks() - currentTick;
+        if(frameTime < frameDelta) {
+            SDL_Delay((bs_int32)(frameDelta - frameTime));
+        }
 #endif
-        UpdatePlayer(&player, delta_time, &event);
+        UpdatePlayer(&player, deltaTime, &event);
 
-        Draw(&player, delta_time, GetWindowSettings());
+        Draw(&player, deltaTime, GetWindowSettings());
     }
 
 
@@ -79,7 +81,7 @@ bool IsHit(const bs_int map[MAP_WIDTH * MAP_HEIGHT], bs_Vector2 point, bs_float 
     return false;
 }
 
-void StepRay(bs_Vector2 position, bs_Vector2 forward, bs_int stepCount, bs_int* pIncr, bs_Color color, bs_Vector2* pHit)
+void StepRay(bs_Vector2 position, bs_Vector2 forward, bs_int stepCount, bs_Color color, bs_Vector2* pHit)
 {
     bs_Vector2 dir = forward;
 
@@ -99,14 +101,12 @@ void StepRay(bs_Vector2 position, bs_Vector2 forward, bs_int stepCount, bs_int* 
         //     next.x * TILESIZE + HALFTILESIZE, next.y * TILESIZE + HALFTILESIZE, GRAY);
         // }
         if(IsHit(map, next, 0.5f)) {
-            *pHit  = next;
-            *pIncr = 0;
+            *pHit = next;
             return;
         }
         current = next;
     }
-    *pHit  = current;
-    *pIncr = 0;
+    *pHit = current;
 }
 
 bs_Vector2 Update2DPlayer(bs_Vector2* pPosition, bs_double* pRotation, bs_float dt)
@@ -133,8 +133,8 @@ bs_Vector2 Update2DPlayer(bs_Vector2* pPosition, bs_double* pRotation, bs_float 
         *pRotation += rotationSpeed * dt;
     }
     if(state[SDL_SCANCODE_LSHIFT]) {
-        velocity.x *= 2 ;
-        velocity.y *= 2 ;
+        velocity.x *= 2;
+        velocity.y *= 2;
     }
 
     if(!IsHit(map, { pPosition->x + velocity.x, pPosition->y + velocity.y }, 0.5)) {

@@ -21,6 +21,7 @@
 #define BS_WARNING(msg, ...) \
     _log("WARNING: ", msg, COLOR_YELLOW, ##__VA_ARGS__);
 #define BS_ERROR(msg, ...) _log("ERROR: ", msg, COLOR_RED, ##__VA_ARGS__);
+#define BS_DEBUG(msg, ...) _log("DEBUG: ", msg, COLOR_MAGENTA, ##__VA_ARGS__);
 
 #define BS_ASSERT(x, msg, ...)            \
     {                                     \

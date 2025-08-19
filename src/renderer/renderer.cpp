@@ -14,13 +14,13 @@ bs_int                      fov,
 WindowSettings*             pWindowSettings)
 {
     for(bs_int i = -fov; i < fov; i++) {
-        bs_int     c   = 0;
+        // bs_int     c   = 0;
         bs_Vector2 hit = {};
 
         bs_float   rayAngle = (cameraRotation + i) * (BS_PI / 180);
         bs_Vector2 dir      = { sin(rayAngle), cos(rayAngle) };
 
-        StepRay(cameraPosition, dir, RAYS_COUNT, &c, { 130U, 130U, 130U, 255U }, &hit);
+        StepRay(cameraPosition, dir, RAYS_COUNT, { 130U, 130U, 130U, 255U }, &hit);
 
         // BSNOTE: Remove fisheye effect by multiplying distance by cos of angle difference
         bs_float angleDiff = rayAngle - (cameraRotation * (BS_PI / 180));
