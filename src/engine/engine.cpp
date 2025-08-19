@@ -39,6 +39,8 @@ void Shutdown(void)
     SDL_DestroyWindow(windowSettingsDefault.pWindow);
 
     SDL_Quit();
+
+    BS_TRACE("Quited correctly");
 }
 
 WindowSettings* GetWindowSettings(void)
